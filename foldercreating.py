@@ -11,7 +11,6 @@ totalfolders=foldernames
 thehome=os.path.expanduser("~")
 thefolder="/Randopitons"
 default_folder=thehome+thefolder
-
 choice = 0
 maptype = 0
 
