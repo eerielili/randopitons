@@ -1,0 +1,48 @@
+import colorcode
+
+def mapfileinput():
+    maptype = 0
+    print """\n Which map file extension you would want to download ?
+    1. gpx (GPS Exchange Format)
+    2. trk (CompeGPS Land Track File)
+    3. kml (Keyhole Markup Language)\n"""
+
+    while maptype<1 or maptype>3:
+        try:
+            maptype = input("You must enter a number between 1 and 3. Your choice ? ")
+            int(maptype)
+        except (KeyboardInterrupt, SystemExit):
+            print WARNING+"\n\nProcess interrupted by CTRL+C or system."+ENDC
+            exit()
+
+    return maptype
+
+
+def regioninput():
+    zone = 0
+    print """\n Which zone you would want to download ?
+    1. Cirque de Cilaos (Cilaos' Circus)
+    2. Cirque de Mafate (Mafate's Circus)
+    3. Cirque de Salazie (Salazie's Circus)
+    4. Est (East)
+    5. Nord (North)
+    6. Ouest (West)
+    7. Sud (South)
+    8. Volcan (Volcano)
+    9. Ailleurs (Elsewhere)
+    10. All \n"""
+    
+    while zone < 1 or zone > 10:
+        try:
+            zone =  input("You must enter a number between 1 and 10.  Your zone [Default is \"All\"]: ")
+            int(zone)
+        except (KeyboardInterrupt, SystemExit):
+            print WARNING+"\n\nProcess interrupted by CTRL+C or system."+ENDC
+            exit()
+        except SyntaxError:
+            print("\nDefaulting to All. If this isn't what you wanted, you can always interrupt the script by pressing "+BOLD+"CTRL+C"+ENDC)
+            zone = 10;
+        except NameError:
+            print "\nPlease enter a number between 1 and 10."
+            zone = 0
+    return zone

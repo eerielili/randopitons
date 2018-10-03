@@ -1,13 +1,15 @@
 from requests import session
 import getpass
-import xml.etree.ElementTree as xmlp
+
 import os
 from bs4 import BeautifulSoup as bs
 
 
+
+
 def main(region,maptype):
-    MAIL=raw_input("YUORE E-MAIL TO LOG IN TO RANDOPITONS.RE : ")
-    PSW=getpass.getpass(prompt="YUORE PASSWORD TO LOG IN TO RANDOPITONS.RE : ")
+    MAIL=raw_input("Your email to log in to randopitons.re : ")
+    PSW=getpass.getpass(prompt="Your password to log in to randopitons.re: ")
 
 
     payload = {
@@ -19,7 +21,7 @@ def main(region,maptype):
         try:
             post('https://randopitons.re/connexion', data=payload)
         except SSLError, sslerr:
-            print "Erreur de certificat SSL"
+            print "SSL Certificate Error. Please check the time on your computer, adjust it accordingly, or wait a bit before retrying the downloads."
             
         region = c.get('https://randopitons.re/randonnees/region/'+region)
         wsite=bs(region)
@@ -43,7 +45,7 @@ def main(region,maptype):
                 except OSError, e:
                     print("Operating System error: {0}".format(e))
                 except xml.etree.ElementTree.ParseError,e:
-                print("something occuredwith the formating:{0}".format(e))
+                print("Something occured with the formating:{0} . File is not retrievable, passing on next download.".format(e))
                 os.remove('f.gpx')
                 pass
             
