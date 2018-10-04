@@ -1,4 +1,5 @@
 import colorcode
+import getpass
 
 def mapfileinput():
     maptype = 0
@@ -46,3 +47,11 @@ def regioninput():
             print "\nPlease enter a number between 1 and 10."
             zone = 0
     return zone
+
+def loginmail():
+    MAIL=raw_input("Your email to log in to randopitons.re : ")
+    return MAIL
+    
+def loginpass():
+    PSW=getpass.getpass(prompt="Your password to log in to randopitons.re: ")
+    return PASS
