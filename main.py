@@ -13,7 +13,7 @@ filetype=mapfileinput()
 
 if filetype==1:
     basicfilename="f.gpx"
-else if filetype==2:
+elif filetype==2:
     basicfilename="f.trk"
 else:
     basicfilename="f.kml"
