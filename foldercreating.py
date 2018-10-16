@@ -9,7 +9,7 @@ import randoweb as rdo
 thehome=os.path.expanduser("~")
 defoldername="/Randopitons"
 def_folder=thehome+defoldername
-
+a_folder=0
 
 
 
@@ -37,28 +37,42 @@ def mainfolder():
             pass
         
     except SyntaxError:
-        
         os.mkdir(def_folder)
     except KeyboardInterrupt:
         print e.sigkill
+    except:
+        raise
 
-def mkfolder(MAIL,PSW,regionnames,foldernames,maptype,ptr,choice,bfn):
+def mkfolder(MAIL,PSW,regionnames,foldernames,maptype,ptr,bfn):
     
     try:
-        os.mkdir(os.path.join(thehome,foldernames[ptr]))
-        rdo.randoweb(MAIL,PSW,regionnames[ptr],filetype,bfn)
+        if a_folder==0:
+            os.mkdir(os.path.join(def_folder,foldernames[ptr]))
+        else:
+            os.mkdir(os.path.join(a_folder,foldernames[ptr]))
+        rdo.randoweb(MAIL,PSW,regionnames[ptr],maptype,bfn)
     except OSError, er:
         print e.os
         print format(er)
         
         
 def mkallfolder(MAIL,PSW,regionnames,foldernames,maptype,bfn):
-    i=0
+    iii=0
+    a_str="str"
     try:
-        for foldernames in foldernames:
-            os.mkdir(os.path.join(thehome,str(foldernames)))
-            rdo.randoweb(MAIL,PSW,regionnames[i],maptype,bfn)
-            i=i+1
+        for a_str in foldernames:
+            if a_folder==0:
+                os.mkdir(os.path.join(def_folder,a_str))
+            else:
+                os.mkdir(os.path.join(a_folder,a_str))
+                
+                
+            try:
+                print "on attaque par le "+regionnames[iii]
+                rdo.randoweb(MAIL,PSW,regionnames[iii],maptype,bfn)
+            except:
+                raise
+            iii=iii+1
             #subprocess.call("rm -d "+fullpath)
         print "All folders were created successfully"
     except OSError, er:

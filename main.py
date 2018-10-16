@@ -15,8 +15,11 @@ for i in range(9):
        pass
 import foldercreating as fdc
 basicfilename=""
-randonb=[]
-print clc.bold+"\n\nWelcome ! \nWith this script, you will be able to download gpx,trk and kml traces for hitchiking on the Reunion Isle."+clc.endc
+
+print clc.bold+"*************************************************************************************************************"
+print clc.bold+"*                                               Welcome !                                                   *"+clc.endc 
+print clc.bold+"* With this script, you will be able to download gpx,trk and kml traces for hitchiking on the Reunion Isle. *"+clc.endc
+print clc.bold+"*************************************************************************************************************"
 zonechoice=io.regioninput()
 zoneptr=zonechoice-1
 maptype=io.mapfileinput()
@@ -33,9 +36,11 @@ elif maptype==3:
     basicfilename="f.kml"
 
 fdc.mainfolder()
-fdc.mkfolder(MAIL,PSW,webregionnames,foldernames,maptype,zoneptr,basicfilename)
-
-
-
 if zonechoice == 10:
-    fdc.mkallfolder(MAIL,PSW,webregionnames,foldernames,maptype,zoneptr,basicfilename)
+    fdc.mkallfolder(MAIL,PSW,webregionnames,foldernames,maptype,basicfilename)
+else:
+    fdc.mkfolder(MAIL,PSW,webregionnames,foldernames,maptype,zoneptr,basicfilename)
+
+
+
+
