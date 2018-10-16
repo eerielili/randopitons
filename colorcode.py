@@ -1,27 +1,22 @@
+# coding: utf-8
 #Simplified color codes here for error/warning/ok and the such.. messages
-
-#def endcolor(s):
-#	print s+'\033[0m'
 #
-#def bold(s):
-#	endcolor('\033[1m'+s)
-#	
-#def header(s):
-#    endcolor('\033[95m'+s)
-#    
-#def okblue(s):
-#    print '\033[94m'+endcolor(s)
-#    
-#def okgreen(s):
-#    print '\033[92m'+endcolor(s)
-#    
-#def warning(s):
-#    print '\033[93m'+endcolor(s)
-#    
-#def fail(s):
-#    print '\033[91m'+endcolor(s)
-#
-#def underline(s):
-#    print '\033[4m'+endcolor(s)
+#class Colorcode:
+#    def __init__(self):
+#        self.endcolor='\033[0m'
+#        self.bold='\033[1m'
+#        self.header='\033[95m'
+#        self.okblue='\033[94m'
+#        self.okgreen='\033[92m'
+#        self.warn='\033[93m'
+#        self.fail='\033[91m'
+#        self.underline='\033[4m'
 
-#bold("fancy shit man")
+endc='\033[0m'
+bold='\033[1m'
+head='\033[95m'
+okblue='\033[94m'
+okgreen='\033[92m'
+warn='\033[93m'
+fail='\033[91m'
+underline='\033[4m'

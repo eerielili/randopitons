@@ -1,17 +1,18 @@
 from requests import session
 import inputs
 from bs4 import BeautifulSoup as bs
+import colorcode as clc
+import errmsg as e
 
 
-
-
+def randoweb():
     with session() as c:
         try:
             post('https://randopitons.re/connexion', data=payload)
             region = c.get('https://randopitons.re/randonnees/region/'+region)
             wsite=bs(region)
         except SSLError, sslerr:
-            print "SSL Certificate Error. Please check the time on your computer, adjust it accordingly, or wait a bit before retrying the downloads."
+            print e.sslerr
             
         
 
@@ -28,12 +29,13 @@ from bs4 import BeautifulSoup as bs
                 gpxf.write(gudencoding)
                 gpxf.close()
                 
-            print("FINISHED WRITING FILES")
+            print("Finished writing files.")
         except OSError, e:
-                print("Operating System error: {0}".format(e))
+            print e.os
+            print format(e)
         
         
 
-    print(response.headers)
-print(response.text)
+#print(response.headers)
+#print(response.text)
 
