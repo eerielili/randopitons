@@ -16,7 +16,6 @@ def mapfileinput():
         except (KeyboardInterrupt, SystemExit):
             print e.sigkill
             exit()
-
     return maptype
 
 
@@ -42,7 +41,7 @@ def regioninput():
             print e.sigkill
             exit()
         except SyntaxError:
-            print("\nDefaulting to All. If this isn't what you wanted, you can always interrupt the script by pressing "+BOLD+"CTRL+C"+ENDC)
+            print("\nDefaulting to All. If this isn't what you wanted, you can always interrupt the script by pressing "+clc.bold+"CTRL+C"+clc.endc)
             zone = 10;
         except NameError:
             print "\nPlease enter a number between 1 and 10."

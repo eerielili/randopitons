@@ -11,14 +11,13 @@ def randoweb():
             post('https://randopitons.re/connexion', data=payload)
             region = c.get('https://randopitons.re/randonnees/region/'+region)
             wsite=bs(region)
+            for i in wsite.find_all('tr'):
+                randonb.append(i.get("rid"))
         except SSLError, sslerr:
             print e.sslerr
-            
-        
 
         
-        for i in wsite.find_all('tr'):
-            randonb.append(i.get("rid"))
+        
 
         try:
             for i in randonb:
