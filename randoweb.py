@@ -3,10 +3,20 @@ import inputs
 from bs4 import BeautifulSoup as bs
 import colorcode as clc
 import errmsg as e
+import mapsparsing as mpp
 
 
-def randoweb():
+
+    
+    
+def randoweb(MAIL,PSW,region,maptype,bfn):
+    payload = {
+        'mail': MAIL,
+        'password': PSW
+    }
+    
     with session() as c:
+        
         try:
             post('https://randopitons.re/connexion', data=payload)
             region = c.get('https://randopitons.re/randonnees/region/'+region)
@@ -15,23 +25,29 @@ def randoweb():
                 randonb.append(i.get("rid"))
         except SSLError, sslerr:
             print e.sslerr
-
-        
-        
-
+                
         try:
             for i in randonb:
-                dwnld = c.get('https://randopitons.re/randonnee/'+i+'/trace/'+maptype)
+                dwnld="all the interwebz"
+                if maptype==1:
+                    dwnld = c.get('https://randopitons.re/randonnee/'+i+'/trace/gpx')
+                    gpxf=open(bfn,'a+')
+                elif maptype==2:
+                    dwnld = c.get('https://randopitons.re/randonnee/'+i+'/trace/kml')
+                    gpxf=open(bfn,'a+')
+                else:
+                    dwnld = c.get('https://randopitons.re/randonnee/'+i+'/trace/trk')
+                    gpxf=open(bfn,'a+')
+                    
                 gudencoding=dwnld.text.encode('utf-8')
-                
-                gpxf=open('f.gpx','a+')
                 gpxf.write(gudencoding)
                 gpxf.close()
-                
+            
+            mpp.mapparsing(maptype,bfn)    
             print("Finished writing files.")
-        except OSError, e:
+        except OSError, er:
             print e.os
-            print format(e)
+            print format(er)
         
         
 

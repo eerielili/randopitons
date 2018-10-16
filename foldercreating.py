@@ -3,49 +3,65 @@ import os
 import time
 import colorcode as clc
 import errmsg as e
+import randoweb as rdo
 #global foldernames
 
-#(foldernames[0].split(' ')[0]+"-"+foldernames[0].split(' ')[2]).lower()  => cirque-cilaos . ce formating sera pratique lors de la récupération sur site web
 thehome=os.path.expanduser("~")
 defoldername="/Randopitons"
 def_folder=thehome+defoldername
-fullpath=thehome+"/"+foldernames[regionptr]
 
+
+
+
+
+def defolder():
+    try:
+        print "\nCreating default folder "+def_folder+" ..."
+        os.mkdir(def_folder)
+    except OSError,er:
+        print e.os
+        print format(er)
+        
 def mainfolder():
     try:
         a_folder=input("\n\nWhich folder would you want to download the files to [Default to home directory "+def_folder+"]")
+        os.mkdir(a_folder)
         print "Folder "+a_folder+" was created successfully"
-    except OSError, e:
+    except OSError, er:
         #errors out if folder exists else print the error (can be permissions or anything else)
-        if e.errno == os.errno.EEXIST:
-            print e.direxist
+        if e.errno != os.errno.EEXIST:
+            raise
         else:
             print e.os
-            print format(e)
-        pass
+            print format(er)
+            pass
+        
     except SyntaxError:
-        print "\nCreating default folder "+def_folder+" ..."
+        
         os.mkdir(def_folder)
+    except KeyboardInterrupt:
+        print e.sigkill
 
-def mkfolder(choice):
-    regionptr=choice-1
+def mkfolder(MAIL,PSW,regionnames,foldernames,maptype,ptr,choice,bfn):
+    
     try:
-        os.mkdir(os.path.join(thehome,foldernames[regionptr]))    
-    except OSError, e:
+        os.mkdir(os.path.join(thehome,foldernames[ptr]))
+        rdo.randoweb(MAIL,PSW,regionnames[ptr],filetype,bfn)
+    except OSError, er:
         print e.os
-        print format(e)
+        print format(er)
         
         
-def mkallfolder(choice):
+def mkallfolder(MAIL,PSW,regionnames,foldernames,maptype,bfn):
+    i=0
     try:
-        if choice == 10:
-            for foldernames in range(9):
-                os.mkdir(os.path.join(thehome,str(foldernames)))
-                #subprocess.call("rm -d "+fullpath)
-            print "All folders were created successfully"
-    except OSError, e:
+        for foldernames in foldernames:
+            os.mkdir(os.path.join(thehome,str(foldernames)))
+            rdo.randoweb(MAIL,PSW,regionnames[i],maptype,bfn)
+            i=i+1
+            #subprocess.call("rm -d "+fullpath)
+        print "All folders were created successfully"
+    except OSError, er:
         print e.os
-        print format(e)
+        print format(er)
 
-
-#print "Program ended."
