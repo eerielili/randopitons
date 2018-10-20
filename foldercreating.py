@@ -50,7 +50,8 @@ def mkfolder(MAIL,PSW,regionnames,foldernames,maptype,ptr,bfn):
             os.mkdir(os.path.join(def_folder,foldernames[ptr]))
         else:
             os.mkdir(os.path.join(a_folder,foldernames[ptr]))
-        rdo.randoweb(MAIL,PSW,regionnames[ptr],maptype,bfn)
+        #rdo.testalakon()
+        rdo.randoweb(MAIL,PSW,regionnames[ptr],maptype,bfn,def_folder+a_str)
     except OSError, er:
         print e.os
         print format(er)
@@ -69,7 +70,7 @@ def mkallfolder(MAIL,PSW,regionnames,foldernames,maptype,bfn):
                 
             try:
                 print "on attaque par le "+regionnames[iii]
-                rdo.randoweb(MAIL,PSW,regionnames[iii],maptype,bfn)
+                rdo.randoweb(MAIL,PSW,regionnames[iii],maptype,bfn,def_folder+a_str)
             except:
                 raise
             iii=iii+1
