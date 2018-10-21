@@ -1,9 +1,1 @@
-cirque-cilaos
-cirque-mafate
-cirque-salazie
-est
-nord
-ouest
-sud
-volcan
-ailleurs
+cirque-cilaos\ncirque-mafate\ncirque-salazie\nest\nnord\nouest\nsud\nvolcan\nailleurs

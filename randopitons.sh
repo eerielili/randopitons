@@ -47,32 +47,15 @@ read -s RDPUSERPASS
 if [ -s "./regions.txt" ];then
 	echo "Region file is already there. OK"
 else
-	echo "Region file isn't. Not OK, we will create it."
-	echo "Cirque de Cilaos
-	Cirque de Mafate
-	Cirque de Salazie
-	Est
-	Nord
-	Ouest
-	Sud
-	Volcan
-	Ailleurs
-	All">regions.txt
+	echo "Region file doesn't exist, we will create it."
+	echo -e "Cirque de Cilaos\nCirque de Mafate\nCirque de Salazie\nEst\nNord\nOuest\nSud\nVolcan\nAilleurs\nAll">regions.txt
 fi
 
-if [-s "./webregions.txt"];then
+if [ -s "./webregions.txt" ];then
 	echo "Webegion file is already there. OK"
 else
-	echo "Wegion file isn't. Not OK, we will create it."
-	echo "cirque-cilaos
-	cirque-mafate
-	cirque-salazie
-	est
-	nord
-	ouest
-	sud
-	volcan
-	ailleurs">webregions.txt
+	echo "Webregion file doesn't exist, we will create it."
+	echo -e "cirque-cilaos\ncirque-mafate\ncirque-salazie\nest\nnord\nouest\nsud\nvolcan\nailleurs">webregions.txt
 fi
 
 MAPTYPE="gpx"
@@ -105,14 +88,17 @@ while [ "$1" != "" ]; do
 		;;
 	-r | --region )
 		shift
-		
-	-a | --all )
-		echo -e "\nThis will download all the hitchiking routes from all regions."
-		echo -e "\nIf no maptype is specified (with -mp or --maptype), it will default to .gpx filetype.\n${BLD}Pausing for 5 seconds before launching it.$RS"
-		purerage	
+		matching=`grep -iE "$1" regions.txt`
+		webmatching=`grep -iE "$1" webregions.txt`
+		if [ "$1" != "" ];then
+			echo -e "Your region choice was '$1'\n See what matched :"
+		else
+			echo -e $HC$FCYN"$matching"$RS
+		fi
 		;;
-
-	
+	-a | --all )
+		echo -e "\nThis will download all the hitchiking routes from all regions.\nIf no maptype is specified (with -mp or --maptype), it will default to .gpx filetype.\n${BLD}Pausing for 5 seconds before launching it.$RS"
+		;;
 
 #	-h | --help )           tellusage
 #                               exit
