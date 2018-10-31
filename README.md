@@ -15,13 +15,20 @@ Then `bash randopitons.sh` followed by options.
 
 ## Usage
 The following options are mandatory:
+
+
 `--username/-u "your-username-or-email@randopitons.re"`: After that, you will be prompted for your password (it won't display it as you type so don't worry, it's for protecting you     from curious peoples looking at you screen (a.k.a shouldersurfing).
 
 Facultative:
+
 `--maptype/-mp maptype`: Can be used to specify a particular filetype to download between the 3 choices available. See \"-lm\" for more info
+
 `--list-regions/-lr`: Display the list of available regions.
+
 `--list-maptype/-lm`: Display the list of available maptypes.
+
 `--region/-r "string"`: Will download the matching regions from the string.
+
 `--all/-a`: Will download all the files from all regions
 
 # LICENSE
