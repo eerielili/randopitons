@@ -20,8 +20,8 @@ IFS=$'\n'
 
 _tellusage()
 {
-	echo -e "${BLD}PURPOSE:${RS} With this script, you will be able to download gpx,trk and kml files for hitchiking on the Reunion Isle.\n
-${BLD}USAGE$RS: . ./randopitons.sh option1 option2 option3
+	echo -e "PURPOSE:${RS} With this script, you will be able to download gpx,trk and kml files for hitchiking on the Reunion Isle.\n
+USAGE$RS: . ./randopitons.sh option1 option2 option3
 The following options are mandatory:
 	--username/-u \"your-username-or-email@randopitons.re\": After that, you will be prompted for your password (it won't display it as you type so don't worry, it's for protecting you from curious peoples looking at you screen (a.k.a shouldersurfing).
 
@@ -99,7 +99,7 @@ while [ "$1" != "" ]; do
 		while [ $MAPTYPE != "gpx" -a $MAPTYPE != "trk" -a $MAPTYPE != "kml" ]
 		do	
 			echo -e "\nMaptype supplied is not correct"
-			echo -e "Which map filetype you want to set : ${BLD}gpx(default),trk or kml ?$RS"
+			echo -e "Which map filetype you want to set : gpx(default),trk or kml ?$RS"
 			read -N 3 MAPTYPE
 		done
 		echo -e $HC$FGRN"\nThe $MAPTYPE maptype is a valid choice !"$RS
@@ -127,7 +127,7 @@ while [ "$1" != "" ]; do
 		done
 		;;
 	-a | --all )
-			echo -e "\nThis will download all the hitchiking routes from all regions.\nIf no maptype is specified (with -mp or --maptype), it will default to .gpx filetype.\n${BLD}Pausing for 5 seconds before launching it.$RS"
+			echo -e "\nThis will download all the hitchiking routes from all regions.\nIf no maptype is specified (with -mp or --maptype), it will default to .gpx filetype.\nPausing for 5 seconds before launching it.$RS"
 			sleep 5	
 			while read linefromfile; do
   				mkdir "${linefromfile}"

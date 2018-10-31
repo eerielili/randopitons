@@ -3,6 +3,7 @@ Hello !
 Here's a bash script for downloading hitchiking files from [https://randopitons.re](https://randopitons.re)
 You will need to make an account on the website before using the script (as these credentials are needed).
 
+Work is still on progress.
 ## Installation
 
 If you have git installed on your computer, you can clone it by doing:
