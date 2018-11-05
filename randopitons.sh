@@ -12,7 +12,8 @@ __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 __file="${__dir}/$(basename "${BASH_SOURCE[0]}")"
 __base="$(basename ${__file} .sh)"
 __root="$(cd "$(dirname "${__dir}")" && pwd)" # <-- change this as it depends on your app
-
+REGIONS=$(cat ${__dir}/regions.txt)
+REGIONFILE="${__dir}/regions.txt"
 
 #https://stackoverflow.com/questions/4813092/how-to-read-entire-line-from-bash
 #so we don't use a while loop
@@ -62,21 +63,31 @@ _logincheck()
 	fi
 }
 
+_crearegfile()
+{
+ echo "Region file doesn't exist or has been modified, we will (re)create it."
+ echo -e "Cirque de Cilaos\nCirque de Mafate\nCirque de Salazie\nEst\nNord\nOuest\nSud\nVolcan\nAilleurs\nAll">$REGIONFILE
+}
 
-REGIONS=$(cat ${__dir}/regions.txt)
-REGIONFILE="${__dir}/regions.txt"
+
 MAPTYPE="gpx"
 RDPUSER=
 RDPUSERPASS=
 LOGINOK=
 
 #Filechecks
+echo -e "Cirque de Cilaos\nCirque de Mafate\nCirque de Salazie\nEst\nNord\nOuest\nSud\nVolcan\nAilleurs\nAll">/tmp/regions.txt
+_ORIGREGIONMD5=$(md5sum /tmp/regions.txt)
+_CURRENTREGIONMD5=$(md5sum $REGIONFILE)
+echo $_ORIGREGIONMD5 > /tmp/regionshash.txt
 if [ -s $REGIONFILE ];then
 	echo "Region file is already there. OK"
+elif [ "$_CURRENTREGIONMD5" != "$_ORIGREGIONMD5" ]
+	_crearegfile
 else
-	echo "Region file doesn't exist, we will create it."
-	echo -e "Cirque de Cilaos\nCirque de Mafate\nCirque de Salazie\nEst\nNord\nOuest\nSud\nVolcan\nAilleurs\nAll">$REGIONFILE
+    _crearegfile
 fi
+
 
 if [ "$1" = "" ];then
 	_help
@@ -88,7 +99,7 @@ while [ "$1" != "" ]; do
         -u | --username )  
 		shift
 		RDPUSER="$1"
-                _credentials
+        _credentials
 		_logincheck
 		;;
 
