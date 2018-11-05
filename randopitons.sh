@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Bash3 Boilerplate. Copyright (c) 2014, kvz.io
-
+clear
 
 #set -o errexit
 #set -o pipefail
@@ -18,20 +18,25 @@ __root="$(cd "$(dirname "${__dir}")" && pwd)" # <-- change this as it depends on
 #so we don't use a while loop
 IFS=$'\n'
 
-_tellusage()
+_download()
 {
-	echo -e "PURPOSE:${RS} With this script, you will be able to download gpx,trk and kml files for hitchiking on the Reunion Isle.\n
-USAGE$RS: . ./randopitons.sh option1 option2 option3
-The following options are mandatory:
-	--username/-u \"your-username-or-email@randopitons.re\": After that, you will be prompted for your password (it won't display it as you type so don't worry, it's for protecting you from curious peoples looking at you screen (a.k.a shouldersurfing).
 
-Facultative:
-	--maptype/-mp maptype: Can be used to specify a particular filetype to download between the 3 choices available. See \"-lm\" for more info
-	--list-regions/-lr: Display the list of available regions.
-	--list-maptype/-lm: Display the list of available maptypes.
-	--region/-r \"string\": Will download the matching regions from the string.
-	--all/-a: Will download all the files from all regions."
+ while read linefromfile; do
+  mkdir "${linefromfile}"
+  cd "${linefromfile}"
+  WEBREGION=$(echo ${linefromfile} | sed 's/ de /\-/g' | tr '[:upper:]' '[:lower:]')
+  FILENBRS=$(wget -qO- https://randopitons.re/randonnees/region/${WEBREGION} | grep "<tr rid" | cut -d \" -f2)
+  for nbr in $FILENBRS;do
+   wget --content-disposition --load-cookies ${__dir}/cookiejar.txt "https://randopitons.re/randonnee/${nbr}/trace/${MAPTYPE}"
+  done
+ done <${__dir}/$1.txt
+}
 
+_help()
+{
+
+	man ${__dir}/randopitons.1
+	exit
 }
 
 _credentials()
@@ -57,23 +62,24 @@ _logincheck()
 	fi
 }
 
-#Filechecks
-if [ -s "${__dir}/regions.txt" ];then
-	echo "Region file is already there. OK"
-else
-	echo "Region file doesn't exist, we will create it."
-	echo -e "Cirque de Cilaos\nCirque de Mafate\nCirque de Salazie\nEst\nNord\nOuest\nSud\nVolcan\nAilleurs\nAll">${__dir}/regions.txt
-fi
-
 
 REGIONS=$(cat ${__dir}/regions.txt)
+REGIONFILE="${__dir}/regions.txt"
 MAPTYPE="gpx"
 RDPUSER=
 RDPUSERPASS=
 LOGINOK=
 
+#Filechecks
+if [ -s $REGIONFILE ];then
+	echo "Region file is already there. OK"
+else
+	echo "Region file doesn't exist, we will create it."
+	echo -e "Cirque de Cilaos\nCirque de Mafate\nCirque de Salazie\nEst\nNord\nOuest\nSud\nVolcan\nAilleurs\nAll">$REGIONFILE
+fi
+
 if [ "$1" = "" ];then
-	_tellusage
+	_help
 fi
 
 while [ "$1" != "" ]; do
@@ -84,7 +90,6 @@ while [ "$1" != "" ]; do
 		RDPUSER="$1"
                 _credentials
 		_logincheck
-		
 		;;
 
         -mp | --maptype )	
@@ -93,51 +98,52 @@ while [ "$1" != "" ]; do
 		while [ $MAPTYPE != "gpx" -a $MAPTYPE != "trk" -a $MAPTYPE != "kml" ]
 		do	
 			echo -e "\nMaptype supplied is not correct"
-			echo -e "Which map filetype you want to set : gpx(default),trk or kml ?$RS"
+			echo -e "Which map filetype you want to set : gpx(default),trk or kml ?"
 			read -N 3 MAPTYPE
 		done
-		echo -e $HC$FGRN"\nThe $MAPTYPE maptype is a valid choice !"$RS
+		echo -e "\nThe $MAPTYPE maptype is a valid choice !"
 		;;
+
 	-lr | --list-regions)
-		echo -e "Here's a list:\n$REGIONS"
+		echo -e "Here's a list:\n"
+		cat $REGIONFILE
 		;;
-	-lm | --list-maptype)
+
+	-lm | --list-maptypes)
 		echo "These are the valid maptypes:gpx\nkml\ntrk"
 		;;
+
 	-r | --region )
 		shift
-		matching=$(grep -iE "$1" ${__dir}/regions.txt)
-		if [ "$1" = "" -o "$matching" = "" ];then
+		MATCHEDFILE="${__dir}/matched.txt"
+		grep -iE "$1" $REGIONFILE > $MATCHEDFILE
+		if [ -s  ];then
 			echo "Nothing matched or you entered an empty value."
-			_tellusage
+			_help		
 		fi
 
 		echo -e "Your region choice was '$1'\n See what matched :"
-		echo -e $HC$FCYN"$matching"$RS
-		webmatching=$(echo $matching | sed 's/ de /\-/g' | tr '[:upper:]' '[:lower:]')
-		FILENBRS=$(wget -qO- https://randopitons.re/randonnees/region/${webmatching} | grep "<tr rid" | cut -d \" -f2)
-		for nbr in $FILENBRS;do
-			wget --content-disposition --load-cookies ${__dir}/cookiejar.txt "https://randopitons.re/randonnee/${nbr}/trace/${MAPTYPE}"
-		done
-		;;
-	-a | --all )
-			echo -e "\nThis will download all the hitchiking routes from all regions.\nIf no maptype is specified (with -mp or --maptype), it will default to .gpx filetype.\nPausing for 5 seconds before launching it.$RS"
-			sleep 5	
-			while read linefromfile; do
-  				mkdir "${linefromfile}"
-				cd "${linefromfile}"
-				WEBREGION=$(echo ${linefromfile} | sed 's/ de /\-/g' | tr '[:upper:]' '[:lower:]')
-				FILENBRS=$(wget -qO- https://randopitons.re/randonnees/region/${WEBREGION} | grep "<tr rid" | cut -d \" -f2)
-				for nbr in $FILENBRS;do
-					wget --content-disposition --load-cookies ${__dir}/cookiejar.txt "https://randopitons.re/randonnee/${nbr}/trace/${MAPTYPE}"
-				done
-			done <${__dir}/regions.txt
-		
+		cat $MATCHEDFILE
+		_download $MATCHEDFILE
 		;;
 
-	-h | --help )           _tellusage
-                               ;;
-        * )                     _tellusage
+	-a | --all )
+		echo -e "\nThis will download all the hitchiking routes from all regions.\nIf no maptype is specified (with -mp or --maptype), it will default to .gpx filetype.\nPausing for 5 seconds before launching it."
+		_download $REGIONFILE
+		sleep 5	
+		;;
+
+	-em | --elevator-music )
+		echo "Initiating elevator music"
+		mpv --no-audio --really-quiet "https://www.youtube.com/watch?v=KfNXGY9O5VY" & || echo -e "\nmpv is not installed."
+		;;
+
+	-h | --help )
+		_help
+                ;;
+
+	* )
+		_help
     esac
     shift
 done
