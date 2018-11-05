@@ -1,4 +1,4 @@
-# randopitons
+# 🗻randopitons🗻
 Hello !
 
 Here's a bash script for downloading hitchiking files from [https://randopitons.re](https://randopitons.re).
