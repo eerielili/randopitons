@@ -23,14 +23,16 @@ _download()
 {
 
  while read linefromfile; do
-  mkdir "${linefromfile}"
-  cd "${linefromfile}"
+  mkdir -p ${__dir}/randopfiles/"${linefromfile}"
+  cd ${__dir}/randopfiles/"${linefromfile}"
   WEBREGION=$(echo ${linefromfile} | sed 's/ de /\-/g' | tr '[:upper:]' '[:lower:]')
   FILENBRS=$(wget -qO- https://randopitons.re/randonnees/region/${WEBREGION} | grep "<tr rid" | cut -d \" -f2)
   for nbr in $FILENBRS;do
-   wget --content-disposition --load-cookies ${__dir}/cookiejar.txt "https://randopitons.re/randonnee/${nbr}/trace/${MAPTYPE}"
+  # you can change the delay for the -w option. I'm not held responsible for any DDoS complaints.
+   wget -w 2 --content-disposition --load-cookies ${__dir}/cookiejar.txt "https://randopitons.re/randonnee/${nbr}/trace/${MAPTYPE}"
   done
- done <${__dir}/$1.txt
+  cd ..
+ done <$1
 }
 
 _help()
@@ -82,7 +84,7 @@ _CURRENTREGIONMD5=$(md5sum $REGIONFILE)
 echo $_ORIGREGIONMD5 > /tmp/regionshash.txt
 if [ -s $REGIONFILE ];then
 	echo "Region file is already there. OK"
-elif [ "$_CURRENTREGIONMD5" != "$_ORIGREGIONMD5" ]
+elif [ "$_CURRENTREGIONMD5" != "$_ORIGREGIONMD5" ];then
 	_crearegfile
 else
     _crearegfile
@@ -146,7 +148,7 @@ while [ "$1" != "" ]; do
 
 	-em | --elevator-music )
 		echo "Initiating elevator music"
-		mpv --no-audio --really-quiet "https://www.youtube.com/watch?v=KfNXGY9O5VY" & || echo -e "\nmpv is not installed."
+		mpv --no-audio --really-quiet https://www.youtube.com/watch?v=KfNXGY9O5VY || echo -e "\nmpv is not installed."
 		;;
 
 	-h | --help )
