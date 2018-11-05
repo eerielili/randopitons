@@ -18,7 +18,7 @@ bash randopitons.sh [options]
 ## Usage
 Type the following: 
 ```bash
-man randopitons.7
+man randopitons.7.gz
 ```
 or
 ```bash
