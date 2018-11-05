@@ -5,15 +5,15 @@ Here's a bash script for downloading hitchiking files from [https://randopitons.
 
 You will need to make an account on the website before using the script (as these credentials are needed).
 
-Work is still on progress.
 ## Installation
 
 If you have git installed on your computer, you can clone it by doing:
 ```bash
-git clone https://github.com/MIQUELLIONEL/randopitons
-cd randopitons
+git clone https://github.com/MIQUELLIONEL/randopitons && cd randopitons
+sudo chmod u+x ./randopitons.sh
+bash randopitons.sh [options]
 ```
-Then `bash randopitons.sh` followed by options.
+
 
 ## Usage
 Type the following: 
