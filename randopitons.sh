@@ -5,7 +5,7 @@
 #set -o errexit
 #set -o pipefail
 #set -o nounset
-set -o xtrace
+#set -o xtrace
 
 # Set magic variables for current file & dir
 __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -65,12 +65,6 @@ else
 	echo -e "Cirque de Cilaos\nCirque de Mafate\nCirque de Salazie\nEst\nNord\nOuest\nSud\nVolcan\nAilleurs\nAll">${__dir}/regions.txt
 fi
 
-if [ -s "${__dir}/webregions.txt" ];then
-	echo "Webegion file is already there. OK"
-else
-	echo "Webregion file doesn't exist, we will create it."
-	echo -e "cirque-cilaos\ncirque-mafate\ncirque-salazie\nest\nnord\nouest\nsud\nvolcan\nailleurs">${__dir}/webregions.txt
-	fi
 
 REGIONS=$(cat ${__dir}/regions.txt)
 MAPTYPE="gpx"
