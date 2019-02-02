@@ -38,7 +38,7 @@ _download()
 _help()
 {
 
-	man ${__dir}/randopitons.1
+	man ${__dir}/randopitons.7.gz
 	exit
 }
 
