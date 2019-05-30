@@ -4,6 +4,10 @@ __pycache__/
 *$py.class
 *.pyc
 
+#swp files
+*.swp
+.*.swp
+
 # C extensions
 *.so
 
