@@ -21,8 +21,6 @@ MATCHEDFILE="$(mktemp)"
 MAPTYPE="gpx"
 RDPUSER=
 RDPUSERPASS=
-LOGINOK=
-
 
 #Filechecks
 mkdir -p $DATADIR
@@ -99,11 +97,9 @@ _logincheck()
 	LOGINTEST=$(wget --no-config -qO- --save-cookies $COOKIES_FILE --keep-session-cookies --post-data="mail=${RDPUSER}&password=${RDPUSERPASS}" --delete-after https://randopitons.re/connexion | grep "L'adresse mail ou le mot de passe ne correspondent pas.")
 	if [ -z "$LOGINTEST" ];then
 		printf "${GREEN}Login is successful.${STYLE_END}\n"
-		LOGINOK=true
 		mkdir -p "$DATADIR/randopfiles"
 	else
 		echo "${RED}Login is not successful.${STYLE_END}\n"
-		LOGINOK=false
 		rm  $COOKIES_FILE
 		exit
 	fi
