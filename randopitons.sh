@@ -10,7 +10,9 @@ GREEN='\033[32m'
 RED='\033[31m'
 STYLE_END='\033[0m'
 
+
 # Set magic variables for current file & dir
+MANPATH="/usr/share/man:$HOME/.local/share/man"
 DATADIR="$HOME/.local/share/randopitons"
 COOKIES_FILE="$DATADIR/cookies.txt"
 REGIONFILE="$DATADIR/regions.txt"
@@ -52,29 +54,32 @@ _download()
             exit 1
         fi
 
-        DOWNLOAD_DIR=${__dir}/randopfiles/"${linefromfile}"/${MAPTYPE}
+        DOWNLOAD_DIR="${DATADIR}/tracefiles/${linefromfile}/${MAPTYPE}"
         printf "Trace files for the ${WEBREGION} with extension '${MAPTYPE}' will be downloaded to ${BOLD}$DOWNLOAD_DIR${STYLE_END}"
 
-        mkdir -p $DOWNLOAD_DIR
-        cd $DOWNLOAD_DIR
+        mkdir -p "$DOWNLOAD_DIR"
+        cd "$DOWNLOAD_DIR"
         WEBREGION=$(echo ${linefromfile} | sed 's/ de /\-/g' | tr '[:upper:]' '[:lower:]')
         printf "\nExtracting URL to download geo files from...\n"
         TRACES=$(curl --silent  https://randopitons.re/randonnees/region/${WEBREGION} | grep "<tr rid" | cut -d \" -f2) || (printf "Failed extraction. Aborting.\n" && exit 1)
 
         for trace in $TRACES; do
             sleep 3
-            wget --quiet --no-config --content-disposition --load-cookies $COOKIES_FILE "https://randopitons.re/randonnee/${trace}/trace/${MAPTYPE}" && printf "Succesfully download trace ${trace}\n" || (printf "Failed downloading trace ${trace} ...\n")
+            wget --quiet --no-config --content-disposition --load-cookies $COOKIES_FILE "https://randopitons.re/randonnee/${trace}/trace/${MAPTYPE}" && printf "${GREEN}Succesfully download trace ${trace}${STYLE_END}\n" || (printf "${RED}Failed downloading trace ${trace} ...${STYLE_END}\n")
         done
 
-        cd ${__dir}
+        cd ..
     done <$1
 }
 
 _help()
 {
 
-	man ${__dir}/randopitons.7.gz
-	exit
+	if ! man randopitons; then
+        mkdir -p ~/.local/share/man/man7
+        cp randopitons.7.gz ~/.local/share/man/man7/
+        man randopitons
+    fi
 }
 
 _credentials()
@@ -93,11 +98,11 @@ _logincheck()
     _check_connectivity || exit 1
 	LOGINTEST=$(wget --no-config -qO- --save-cookies $COOKIES_FILE --keep-session-cookies --post-data="mail=${RDPUSER}&password=${RDPUSERPASS}" --delete-after https://randopitons.re/connexion | grep "L'adresse mail ou le mot de passe ne correspondent pas.")
 	if [ -z "$LOGINTEST" ];then
-		echo "Login is successful."
+		printf "${GREEN}Login is successful.${STYLE_END}\n"
 		LOGINOK=true
-		mkdir ${__dir}/randopfiles
+		mkdir -p "$DATADIR/randopfiles"
 	else
-		echo "Login is not successful."
+		echo "${RED}Login is not successful.${STYLE_END}\n"
 		LOGINOK=false
 		rm  $COOKIES_FILE
 		exit
@@ -118,12 +123,17 @@ while [ "$1" != "" ]; do
         -mp | --maptype )	
 		shift
 		MAPTYPE="$1"
-		while [ $MAPTYPE != "gpx" -a $MAPTYPE != "trk" -a $MAPTYPE != "kml" ]
-		do	
-			printf "\nThe supplied map extension is not correct"
-			printf "Which map filetype you want to set : gpx(default),trk or kml ?"
-			read -N 3 MAPTYPE
-		done
+        
+        while true; do
+            case $MAPTYPE in
+                gpx | trk | kml)
+                    break;;
+                *)
+                    printf "\nThe supplied map extension is not correct\n"
+                    printf "Which map filetype you want to set : gpx(default),trk or kml ?"
+                    read -r MAPTYPE;;
+            esac
+        done
 		printf "\nThe $MAPTYPE map extension has been selected !\n"
 		;;
 
