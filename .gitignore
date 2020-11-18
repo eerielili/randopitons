@@ -110,3 +110,10 @@ venv.bak/
 
 #theme
 *.yml
+
+matched.txt
+cookies.txt
+regions.txt
+randopfiles/
+
+
