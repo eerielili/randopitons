@@ -13,8 +13,8 @@ You will need to make an account on the website before using the script (as thes
 If you have git installed on your computer, you can clone it by doing:
 ```bash
 git clone https://github.com/MIQUELLIONEL/randopitons && cd randopitons
-sudo chmod u+x ./randopitons.sh
-bash randopitons.sh [options]
+chmod u+x ./randopitons.sh
+./randopitons.sh [options]
 ```
 
 
@@ -25,5 +25,5 @@ man randopitons.7.gz
 ```
 or
 ```bash
-bash randopitons.sh -h
+./randopitons.sh -h
 ```
