@@ -63,7 +63,7 @@ _download()
 
         for trace in $TRACES; do
             sleep 3
-            wget --quiet --no-config --content-disposition --load-cookies $COOKIES_FILE "https://randopitons.re/randonnee/${trace}/trace/${MAPTYPE}" && printf "${GREEN}Succesfully download trace ${trace}${STYLE_END}\n" || (printf "${RED}Failed downloading trace ${trace} ...${STYLE_END}\n")
+            wget --quiet --no-config --content-disposition --load-cookies $COOKIES_FILE "https://randopitons.re/randonnee/${trace}/trace/${MAPTYPE}" && printf "${GREEN}Succesfully downloaded trace '$(basename $DOWNLOAD_DIR/*${trace}*.gpx)${STYLE_END}'\n" || (printf "${RED}Failed downloading trace ${trace} ...${STYLE_END}\n")
         done
 
         cd ..
@@ -86,9 +86,8 @@ _credentials()
         printf "No username detected on -u switch. Enter it: "
         read -r RDPUSER
     done
-	printf "\nYour username is $RDPUSER. (You can press CTRL+C to cancel the script if this info is incorrect)."
-	printf "\nPassword (for randopitons.re): "
-	read -s RDPUSERPASS
+	printf "\nYour username is $RDPUSER. (You can press CTRL+C to cancel the script if this info is incorrect).\n"
+	read -s -p "Password: " RDPUSERPASS
 }
 
 _logincheck()
@@ -168,7 +167,7 @@ while [ "$1" != "" ]; do
 	-h | --help )
 		_help
                 ;;
-     * )
+    * )
         _help
         ;;
     esac
